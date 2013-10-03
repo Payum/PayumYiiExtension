@@ -84,13 +84,14 @@ class PayumComponent extends CApplicationComponent
      */
     public function getHttpRequestVerifier()
     {
-        return $this->httRequestVerifier;
+        return $this->httpRequestVerifier;
     }
 
     /**
      * @return RegistryInterface
      */
-    public function getRegistry() {
+    public function getRegistry()
+    {
         return $this->registry;
     }
 }
