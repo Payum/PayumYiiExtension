@@ -2,7 +2,9 @@
 namespace Payum\YiiExtension;
 
 use Payum\Exception\RuntimeException;
+use Payum\PaymentInterface;
 use Payum\Registry\RegistryInterface;
+use Payum\Registry\SimpleRegistry;
 use Payum\Request\BinaryMaskStatusRequest;
 use Payum\Request\RedirectUrlInteractiveRequest;
 use Payum\Request\SecuredCaptureRequest;
@@ -10,12 +12,17 @@ use Payum\Security\HttpRequestVerifierInterface;
 use Payum\Security\PlainHttpRequestVerifier;
 use Payum\Storage\StorageInterface;
 
-class PayumComponent extends CApplicationComponent
+class PayumComponent extends \CApplicationComponent
 {
     /**
-     * @var  RegistryInterface
+     * @var PaymentInterface[]
      */
-    public $registry;
+    public $payments;
+
+    /**
+     * @var array
+     */
+    public $storages;
 
     /**
      * @var StorageInterface
@@ -27,28 +34,20 @@ class PayumComponent extends CApplicationComponent
      */
     protected $httpRequestVerifier;
 
+    /**
+     * @var RegistryInterface
+     */
+    protected $registry;
+
     public function init()
     {
-        if (false == $this->registry instanceof RegistryInterface) {
-            throw new RuntimeException(sprintf(
-                'Registry must be instance of RegistryInterface interface but it is %s',
-                is_object($this->registry) ? get_class($this->registry) : gettype($this->registry)
-            ));
-        }
-
-        if (false == $this->tokenStorage instanceof StorageInterface) {
-            throw new RuntimeException(sprintf(
-                'Token storage must be instance of StorageInterface interface but it is %s',
-                is_object($this->registry) ? get_class($this->registry) : gettype($this->registry)
-            ));
-        }
-
+        $this->registry = new SimpleRegistry($this->payments, $this->storages, null, null);
         $this->httpRequestVerifier = new PlainHttpRequestVerifier($this->tokenStorage);
     }
 
     public function captureController()
     {
-        $token = $this->httpRequestVerifier->verify($_REQUEST);
+        $token = $this->httpRequestVerifier->verify(\Yii::app()->request->getRequest());
         $payment = $this->registry->getPayment($token->getPaymentName());
 
         $payment->execute($status = new BinaryMaskStatusRequest($token));
@@ -59,8 +58,8 @@ class PayumComponent extends CApplicationComponent
 
         if ($interactiveRequest = $payment->execute(new SecuredCaptureRequest($token), true)) {
             if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
-                Yii::app()->request->redirect($interactiveRequest->getUrl());
-                Yii::app()->end();
+                \Yii::app()->request->redirect($interactiveRequest->getUrl());
+                \Yii::app()->end();
             }
 
             throw new \LogicException('Unsupported interactive request', null, $interactiveRequest);
@@ -68,7 +67,7 @@ class PayumComponent extends CApplicationComponent
 
         $this->httpRequestVerifier->invalidate($token);
         
-        Yii::app()->request->redirect($token->getAfterUrl());
+        \Yii::app()->request->redirect($token->getAfterUrl());
     }
 
     /**
