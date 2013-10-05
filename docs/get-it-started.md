@@ -1,25 +1,47 @@
-1. Распаковать архив, положить папку PayumYii в папку extensions
- 
-2. Исправить config/main.php, добавть payum в components :
+# Get it started
+
+1. Unzip yii archive and put the payum extension to extensions folder.
+
+2. Edit the extension in `config/main.php`:
 
 ```
-'components' => array(
+// config/main.php
+
+use Buzz\Client\Curl;
+use Payum\Extension\StorageExtension;
+use Payum\Paypal\ExpressCheckout\Nvp\Api;
+use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
+use Payum\Storage\FilesystemStorage;
+
+return array(
+    'components' => array(
         'payum' => array(
-            'class' => 'PayumYiiComponent',
-            'storage_path' => '/path/to/storage',
-            'payments_details' => array (
-                'paypal' => array(
-                    'username' => 'PAYPAL_USERNAME',
-                    'password' => 'PAYPAL_PASSWORD',
-                    'signature' => 'PAYPAL_SIGN',
+            'class' => 'Payum\YiiExtension\PayumComponent',
+            'token_storage' => new FilesystemStorage(__DIR__.'/../../data', 'Payum\Model\Token'),
+            'payments' => array(
+                'paypal' => PaymentFactory::create(new Api(new Curl(), array(
+                    'username' => 'REPLACE WITH YOURS',
+                    'password' => 'REPLACE WITH YOURS',
+                    'signature' => 'REPLACE WITH YOURS',
                     'sandbox' => true
+                )))
+            ),
+            'storages' => array(
+                'paypal' => array(
+                    'Payum\Paypal\ExpressCheckout\Model\PaymentDetails' => new FilesystemStorage(
+                        __DIR__.'/../../data',
+                        'Payum\Paypal\ExpressCheckout\Model\PaymentDetails'
+                    ),
                 )
             )
         ),
-)
+    ),
+);
 ```
- 
-3. в components создать файл PaymentDetailsModel.php :
+
+ _**Note: **Here we use paypal as exmaple. You can configure any other payment similar way._
+
+3. In the components folder create a  файл PaymentDetailsModel.php :
 
 ```
 <?php

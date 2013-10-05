@@ -2,6 +2,7 @@
 namespace Payum\YiiExtension;
 
 use Payum\Exception\RuntimeException;
+use Payum\Extension\StorageExtension;
 use Payum\PaymentInterface;
 use Payum\Registry\RegistryInterface;
 use Payum\Registry\SimpleRegistry;
@@ -43,6 +44,12 @@ class PayumComponent extends \CApplicationComponent
     {
         $this->registry = new SimpleRegistry($this->payments, $this->storages, null, null);
         $this->httpRequestVerifier = new PlainHttpRequestVerifier($this->tokenStorage);
+
+        foreach ($this->registry->getPayments() as $name => $payment) {
+            foreach ($this->registry->getStorages($name) as $storage) {
+                $payment->addExtension(new StorageExtension($storage));
+            }
+        }
     }
 
     public function captureController()
