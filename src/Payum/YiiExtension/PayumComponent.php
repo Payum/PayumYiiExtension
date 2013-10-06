@@ -52,31 +52,6 @@ class PayumComponent extends \CApplicationComponent
         }
     }
 
-    public function captureController()
-    {
-        $token = $this->httpRequestVerifier->verify(\Yii::app()->request->getRequest());
-        $payment = $this->registry->getPayment($token->getPaymentName());
-
-        $payment->execute($status = new BinaryMaskStatusRequest($token));
-        if (false == $status->isNew()) {
-            header('HTTP/1.1 400 Bad Request', true, 400);
-            exit;
-        }
-
-        if ($interactiveRequest = $payment->execute(new SecuredCaptureRequest($token), true)) {
-            if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
-                \Yii::app()->request->redirect($interactiveRequest->getUrl());
-                \Yii::app()->end();
-            }
-
-            throw new \LogicException('Unsupported interactive request', null, $interactiveRequest);
-        }
-
-        $this->httpRequestVerifier->invalidate($token);
-        
-        \Yii::app()->request->redirect($token->getAfterUrl());
-    }
-
     /**
      * @return StorageInterface
      */
