@@ -4,9 +4,11 @@ The preferred way to install the extension is using [composer](http://getcompose
 Add next lines to your _composer.json_ file:
 
 ```json
-"required": {
-    "payum/payum-yii-extension": "0.6.*@dev",
-    "payum/paypal-express-checkout-nvp": "0.6.*@dev"
+{
+    "required": {
+        "payum/payum-yii-extension": "0.6.*@dev",
+        "payum/paypal-express-checkout-nvp": "0.6.*@dev"
+    }
 }
 ```
 

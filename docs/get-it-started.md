@@ -2,11 +2,11 @@
 
 ## Configuration
 
-In the _app//config/main.php` you have to configure payum extensions.
+_**Note**: We assume you already [install the extension](installation.md) correctly._
+
+In the _app/config/main.php_ you have to configure payum extensions.
 In general you define model storages and payments.
 Your configuration may look like this:
-
-_**Note**: We assume you already [install the extension](installation.md) correctly._
 
 ```php
 <?php
