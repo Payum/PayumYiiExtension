@@ -1,6 +1,8 @@
 # Payum Yii Extension
 
-Payum integration into Yii framework
+The extension integrates [payum](https://github.com/Payum/Payum) into [yii](http://www.yiiframework.com/) framework.
+It already supports [+35 payments](https://github.com/Payum/Payum/blob/master/docs/supported-payments-and-other-libraries.md).
+Provide nice configuration layer, secured capture controller, storages integration and lots of more features.
 
 ## Resources
 
