@@ -5,6 +5,7 @@ Payum integration into Yii framework
 ## Resources
 
 * [Documentation](docs/index.md)
+* [The library documentation](https://github.com/Payum/Payum/blob/master/docs/index.md)
 * [Questions](http://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumYiiExtension/issues)
 
