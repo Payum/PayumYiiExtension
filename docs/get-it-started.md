@@ -4,7 +4,8 @@
 
 2. Edit the extension in `config/main.php`:
 
-```
+```php
+<?php
 // config/main.php
 
 use Buzz\Client\Curl;
@@ -39,23 +40,11 @@ return array(
 );
 ```
 
- _**Note: **Here we use paypal as exmaple. You can configure any other payment similar way._
-
-3. In the components folder create a  файл PaymentDetailsModel.php :
-
-```
-<?php
- 
-use Payum\Paypal\ExpressCheckout\Nvp\Model\PaymentDetails;
- 
- 
-class PaymentDetailsModel extends PaymentDetails
-{
-    protected $id;
-}
+ _**Note**: Here we use paypal as example. You can configure any other payment similar way._
  
 4. Использование:
- 
+
+```php
 <?php
  
 use Buzz\Client\Curl;
