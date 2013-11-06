@@ -1,7 +1,7 @@
 # Payum Yii Extension
 
-The extension integrates [payum](https://github.com/Payum/Payum) into [yii](http://www.yiiframework.com/) framework.
-It already supports [+35 payments](https://github.com/Payum/Payum/blob/master/docs/supported-payments-and-other-libraries.md).
+The extension integrates [payum](http://payum.forma-dev.com/documentation#Payum) into [yii](http://www.yiiframework.com/) framework.
+It already supports [+35 payments](http://payum.forma-dev.com/documentation/Payum/supported-payments).
 Provide nice configuration layer, secured capture controller, storages and lots of other features.
 
 ## Resources
