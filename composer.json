@@ -2,8 +2,20 @@
     "name": "payum/payum-yii-extension",
     "type": "yii-extension",
     "description": "Payum integration into Yii",
-    "keywords": ["payment", "paypal", "be2bill", "authorize.net", "omnipay", "paypal express checkout", "paypal pro checkout", "paypal recurring payment", "payex"],
-    "homepage": "https://github.com/Payum/PayumYiiExtension",
+    "keywords": [
+        "payment", 
+        "paypal", 
+        "be2bill", 
+        "authorize.net", 
+        "omnipay", 
+        "paypal express checkout", 
+        "paypal pro checkout", 
+        "recurring payment", 
+        "payex",
+        "offline",
+        "instant notification"
+    ],
+    "homepage": "http://payum.forma-dev.com",
     "license": "MIT",
     "authors": [
         {
@@ -11,13 +23,21 @@
             "email": "plagoda@webdevs.com"
         },
         {
-            "name": "Community",
-            "homepage": "https://github.com/Payum/PayumBundle/graphs/contributors"
+            "name": "Kotlyar Maksim",
+            "email": "kotlyar.maksim@gmail.com"
+        },
+        {
+            "name":     "Payum project",
+            "homepage": "http://payum.forma-dev.com/"
+        },
+        {
+            "name":     "Community contributions",
+            "homepage": "https://github.com/Payum/Payum/contributors"
         }
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/payum": "0.6.x-dev",
+        "payum/payum": "0.7.*@dev",
         "yiisoft/yii": "~1"
     },
     "suggest": {
@@ -33,7 +53,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.6-dev"
+            "dev-master": "0.7-dev"
         }
     },
     "config": {
