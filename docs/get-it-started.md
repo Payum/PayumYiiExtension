@@ -1,8 +1,41 @@
 # Get it started
 
+We assume you already [install the extension](installation.md) correctly. Here we continue our journey.
+
 ## Configuration
 
-_**Note**: We assume you already [install the extension](installation.md) correctly._
+First add some models:
+
+```php
+<?php
+//app/models/PaymentDetails.php
+
+namespace Application\Model;
+
+use Payum\Model\ArrayObject;
+
+class PaymentDetails extends \ArrayObject
+{
+}
+```
+
+The other one is `PaymentSecurityToken`.
+We will use it to secure our payment operations:
+
+```php
+<?php
+//app/models/PaymentSecurityToken.php
+
+namespace Application\Model;
+
+use Payum\Model\Token;
+
+class PaymentSecurityToken extends Token
+{
+}
+```
+
+_**Note**: We provide Doctrine ORM\MognoODM mapping for these parent models too.
 
 In the _app/config/main.php_ you have to configure payum extensions.
 In general you define model storages and payments.
@@ -18,6 +51,8 @@ use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
 use Payum\Storage\FilesystemStorage;
 
+$detailsClass = 'PaymentDetails';
+
 return array(
     'controllerMap'=>array(
         'payment'=>array(
@@ -27,7 +62,7 @@ return array(
     'components' => array(
         'payum' => array(
             'class' => '\Payum\YiiExtension\PayumComponent',
-            'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'Payum\Model\Token', 'hash'),
+            'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken'),
             'payments' => array(
                 'paypal' => PaymentFactory::create(new Api(new Curl(), array(
                     'username' => 'REPLACE WITH YOURS',
@@ -38,10 +73,7 @@ return array(
             ),
             'storages' => array(
                 'paypal' => array(
-                    'Payum\Paypal\ExpressCheckout\Nvp\Model\PaymentDetails' => new FilesystemStorage(
-                        __DIR__.'/../data',
-                        'Payum\Paypal\ExpressCheckout\Nvp\Model\PaymentDetails'
-                    ),
+                    $detailsClass => new FilesystemStorage(__DIR__.'/../data', $detailsClass),
                 )
             )
         ),
@@ -69,23 +101,24 @@ class PaypalController extends CController
     public function actionPrepare()
     {
         $paymentName = 'paypal';
+        $detailsClass = 'PaymentDetails';
 
         $payum = $this->getPayum();
 
         $tokenStorage = $payum->getTokenStorage();
-        $paymentDetailsStorage = $payum->getRegistry()->getStorageForClass(
-            'Payum\Paypal\ExpressCheckout\Nvp\Model\PaymentDetails',
+        $storage = $payum->getRegistry()->getStorageForClass(
+            $detailsClass,
             $paymentName
         );
 
-        $paymentDetails = $paymentDetailsStorage->createModel();
+        $paymentDetails = $storage->createModel();
         $paymentDetails['PAYMENTREQUEST_0_CURRENCYCODE'] = 'USD';
         $paymentDetails['PAYMENTREQUEST_0_AMT'] = 1.23;
-        $paymentDetailsStorage->updateModel($paymentDetails);
+        $storage->updateModel($paymentDetails);
 
         $doneToken = $tokenStorage->createModel();
         $doneToken->setPaymentName($paymentName);
-        $doneToken->setDetails($paymentDetailsStorage->getIdentificator($paymentDetails));
+        $doneToken->setDetails($storage->getIdentificator($paymentDetails));
         $doneToken->setTargetUrl(
             $this->createAbsoluteUrl('paypal/done', array('payum_token' => $doneToken->getHash()))
         );
@@ -93,7 +126,7 @@ class PaypalController extends CController
 
         $captureToken = $tokenStorage->createModel();
         $captureToken->setPaymentName('paypal');
-        $captureToken->setDetails($paymentDetailsStorage->getIdentificator($paymentDetails));
+        $captureToken->setDetails($storage->getIdentificator($paymentDetails));
         $captureToken->setTargetUrl(
             $this->createAbsoluteUrl('payment/capture', array('payum_token' => $captureToken->getHash()))
         );
@@ -102,7 +135,7 @@ class PaypalController extends CController
 
         $paymentDetails['RETURNURL'] = $captureToken->getTargetUrl();
         $paymentDetails['CANCELURL'] = $captureToken->getTargetUrl();
-        $paymentDetailsStorage->updateModel($paymentDetails);
+        $storage->updateModel($paymentDetails);
 
         $this->redirect($captureToken->getTargetUrl());
     }
