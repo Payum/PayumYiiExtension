@@ -7,6 +7,7 @@ Provide nice configuration layer, secured capture controller, storages and lots 
 ## Resources
 
 * [Documentation](http://payum.forma-dev.com/documentation#PayumYiiExtension)
+* [Forum](http://www.yiiframework.com/forum/index.php/topic/48571-payum-payment-extension/)
 * [Questions](http://stackoverflow.com/questions/tagged/payum)
 * [Issue Tracker](https://github.com/Payum/PayumYiiExtension/issues)
 
