@@ -1,7 +1,7 @@
 {
     "name": "payum/payum-yii-extension",
     "type": "yii-extension",
-    "description": "Payum integration into Yii",
+    "description": "Rich payment solutions for Yii framework. Paypal, payex, authorize.net, be2bill, omnipay, recurring paymens, instant notifications and many more",
     "keywords": [
         "payment", 
         "paypal", 
