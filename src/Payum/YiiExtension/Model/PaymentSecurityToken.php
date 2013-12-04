@@ -3,12 +3,15 @@
  * This is the model class for table $tableName, which is being used for token storage for Payum payments
  *
  * The following are the available columns in table $tableName:
- * @property integer $id
- * @property string $payment_name
- * @property string $details
- * @property string $after_url
- * @property string $target_url
- * @property string $hash
+ * @property string $_hash
+ * @property string $_payment_name
+ * @property string $_details
+ * @property string $_after_url
+ * @property string $_target_url
+ *
+ * Underscores are used because usually these would be private and to prevent
+ * the ActiveRecord getters and setters clashing with the required
+ * getters and setters from TokenInterface
  */
 
 namespace Payum\YiiExtension\Model;
@@ -43,7 +46,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
         }
         parent::__construct($scenario);
         if ($scenario == 'insert') {
-            $this->hash = Random::generateToken();
+            $this->_hash = Random::generateToken();
         }
     }
 
@@ -80,7 +83,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     public function getDetails()
     {
-        $parts = explode("#", $this->details);
+        $parts = explode("#", $this->_details);
         return new Identificator($parts[1], $parts[0]);
     }
 
@@ -90,7 +93,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setDetails($details)
     {
-        $this->details = $details;
+        $this->_details = $details;
     }
 
     /**
@@ -98,7 +101,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getHash()
     {
-        return $this->hash;
+        return $this->_hash;
     }
 
     /**
@@ -106,7 +109,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setHash($hash)
     {
-        $this->hash = $hash;
+        $this->_hash = $hash;
     }
 
     /**
@@ -114,7 +117,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getTargetUrl()
     {
-        return $this->target_url;
+        return $this->_target_url;
     }
 
     /**
@@ -122,7 +125,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setTargetUrl($targetUrl)
     {
-        $this->target_url = $targetUrl;
+        $this->_target_url = $targetUrl;
     }
 
     /**
@@ -130,7 +133,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getAfterUrl()
     {
-        return $this->after_url;
+        return $this->_after_url;
     }
 
     /**
@@ -138,7 +141,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setAfterUrl($afterUrl)
     {
-        $this->after_url = $afterUrl;
+        $this->_after_url = $afterUrl;
     }
 
     /**
@@ -146,7 +149,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getPaymentName()
     {
-        return $this->payment_name;
+        return $this->_payment_name;
     }
 
     /**
@@ -154,15 +157,6 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setPaymentName($paymentName)
     {
-        $this->payment_name = $paymentName;
-    }
-
-    /**
-     * Returns the unique model id
-     * @return array|mixed|null
-     */
-    public function getId()
-    {
-        return $this->id;
+        $this->_payment_name = $paymentName;
     }
 }
