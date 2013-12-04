@@ -37,7 +37,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/payum": "0.7.*@dev",
+        "payum/payum": "dev-master#ba046550eca699b1757e63afa8b32bfd716e18e4",
         "yiisoft/yii": "~1"
     },
     "suggest": {

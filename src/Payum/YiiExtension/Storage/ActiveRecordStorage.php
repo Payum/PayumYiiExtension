@@ -8,12 +8,29 @@ use Payum\Storage\AbstractStorage;
 
 class ActiveRecordStorage extends AbstractStorage
 {
+    protected $_tableName;
+
+    public function __construct($tableName, $modelClass)
+    {
+        parent::__construct($modelClass);
+
+        $this->_tableName = $tableName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createModel()
+    {
+        return new $this->modelClass('insert', $this->_tableName);
+    }
+
     /**
      * {@inheritDoc}
      */
     protected function doUpdateModel($model)
     {
-        $model::save();
+        $model->save();
     }
 
     /**
@@ -29,8 +46,8 @@ class ActiveRecordStorage extends AbstractStorage
      */
     protected function doGetIdentificator($model)
     {
-        if (is_array($model->primaryKey()) {
-            throw new LogicException('Composite primary keys is not supported by this storage.');
+        if (is_array($model->primaryKey())) {
+            throw new LogicException('Composite primary keys are not supported by this storage.');
         }
 
         return new Identificator($model->{$model->primaryKey()}, $this->modelClass);
@@ -41,7 +58,8 @@ class ActiveRecordStorage extends AbstractStorage
      */
     function findModelById($id)
     {
-        return $this->modelClass::model()->findByPk($id);
+        $className = $this->modelClass;
+        return $className::model($this->_tableName)->findByPk($id);
     }
 
     /**

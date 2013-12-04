@@ -1,16 +1,84 @@
 <?php
+/**
+ * This is the model class for table $tableName, which is being used for token storage for Payum payments
+ *
+ * The following are the available columns in table $tableName:
+ * @property integer $id
+ * @property string $payment_name
+ * @property string $details
+ * @property string $after_url
+ * @property string $target_url
+ * @property string $hash
+ */
+
 namespace Payum\YiiExtension\Model;
 
 use Payum\Security\TokenInterface;
+use Payum\Exception\InvalidArgumentException;
+
 
 class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
 {
+    private static $_tableName;
+
+    /**
+     * Constructs a model corresponding to table $tableName
+     * The table must have the columns identified above in the
+     * comments for this class.
+     *
+     * @param string $scenario
+     * @param $tableName
+     * @throws \Payum\Exception\InvalidArgumentException
+     */
+    public function __construct($scenario = 'insert', $tableName = '')
+    {
+        if ($scenario == 'insert' && $tableName == '') {
+            throw new InvalidArgumentException(
+                'Table name must be supplied when creating a new PaymentSecurityToken'
+            );
+        }
+        if ($tableName !== '') {
+            self::$_tableName = $tableName;
+        }
+        parent::__construct($scenario);
+        if ($scenario == 'insert') {
+            $this->hash = Random::generateToken();
+        }
+    }
+
+    /**
+     * @return string the associated database table name
+     */
+    public function tableName()
+    {
+        return self::$_tableName;
+    }
+
+    /**
+     * Returns the static model of the specified AR class.
+     * Please note that you should have this exact method in all your CActiveRecord descendants!
+     * @param string $tableName table corresponding to the model
+     * @param string $className active record class name.
+     * @return Payment the static model class
+     * @throws \Payum\Exception\InvalidArgumentException
+     */
+    public static function model($tableName, $className=__CLASS__)
+    {
+        if ($tableName == '') {
+            throw new InvalidArgumentException(
+                'Table name must be supplied when trying to find a PaymentSecurityToken'
+            );
+        }
+        self::$_tableName = $tableName;
+        return parent::model($className);
+    }
+
     /**
      * {@inheritDoc}
      */
     public function getDetails()
     {
-        // TODO: Implement getDetails() method.
+        return $this->details;
     }
 
     /**
@@ -18,7 +86,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setDetails($details)
     {
-        // TODO: Implement setDetails() method.
+        $this->details = $details;
     }
 
     /**
@@ -26,7 +94,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getHash()
     {
-        // TODO: Implement getHash() method.
+        return $this->hash;
     }
 
     /**
@@ -34,7 +102,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setHash($hash)
     {
-        // TODO: Implement setHash() method.
+        $this->hash = $hash;
     }
 
     /**
@@ -42,7 +110,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getTargetUrl()
     {
-        // TODO: Implement getTargetUrl() method.
+        return $this->target_url;
     }
 
     /**
@@ -50,7 +118,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setTargetUrl($targetUrl)
     {
-        // TODO: Implement setTargetUrl() method.
+        $this->target_url = $targetUrl;
     }
 
     /**
@@ -58,7 +126,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getAfterUrl()
     {
-        // TODO: Implement getAfterUrl() method.
+        return $this->after_url;
     }
 
     /**
@@ -66,7 +134,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setAfterUrl($afterUrl)
     {
-        // TODO: Implement setAfterUrl() method.
+        $this->after_url = $afterUrl;
     }
 
     /**
@@ -74,7 +142,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function getPaymentName()
     {
-        // TODO: Implement getPaymentName() method.
+        return $this->payment_name;
     }
 
     /**
@@ -82,70 +150,6 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      */
     function setPaymentName($paymentName)
     {
-        // TODO: Implement setPaymentName() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getHash()
-    {
-        // TODO: Implement getHash() method.
-    }
-
-    /**
-     * @param string $hash
-     */
-    function setHash($hash)
-    {
-        // TODO: Implement setHash() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getTargetUrl()
-    {
-        // TODO: Implement getTargetUrl() method.
-    }
-
-    /**
-     * @param string $targetUrl
-     */
-    function setTargetUrl($targetUrl)
-    {
-        // TODO: Implement setTargetUrl() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getAfterUrl()
-    {
-        // TODO: Implement getAfterUrl() method.
-    }
-
-    /**
-     * @param string $afterUrl
-     */
-    function setAfterUrl($afterUrl)
-    {
-        // TODO: Implement setAfterUrl() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getPaymentName()
-    {
-        // TODO: Implement getPaymentName() method.
-    }
-
-    /**
-     * @param string $paymentName
-     */
-    function setPaymentName($paymentName)
-    {
-        // TODO: Implement setPaymentName() method.
+        $this->payment_name = $paymentName;
     }
 }
