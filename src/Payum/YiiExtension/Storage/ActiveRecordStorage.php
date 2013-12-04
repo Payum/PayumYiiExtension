@@ -22,7 +22,7 @@ class ActiveRecordStorage extends AbstractStorage
      */
     public function createModel()
     {
-        return new $this->modelClass($this->_tableName);
+        return new $this->modelClass('insert', $this->_tableName);
     }
 
     /**
@@ -69,8 +69,11 @@ class ActiveRecordStorage extends AbstractStorage
     {
         parent::assertModelSupported($model);
 
-        if (false == $model instanceof \CActiveRecord) {
-            throw new InvalidArgumentException('Invalid model given. Should be sub class of CActiveRecord class.');
+        if (!property_exists(get_class($model), 'activeRecord')
+            || false == $model->activeRecord instanceof \CActiveRecord) {
+            throw new InvalidArgumentException(
+                'Model required to have activeRecord property, which should be sub class of CActiveRecord class.'
+            );
         }
     }
 }

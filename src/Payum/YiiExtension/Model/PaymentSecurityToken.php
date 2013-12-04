@@ -36,7 +36,7 @@ class PaymentSecurityToken extends Token
 
     public static function findModelById($tableName, $id)
     {
-        $token = new PaymentSecurityToken();
+        $token = new PaymentSecurityToken('update');
         $token->activeRecord = TokenActiveRecord::model($tableName)->findByPk($id);
 
         // Load the values into the token object from the activeRecord
