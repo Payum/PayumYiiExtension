@@ -1,9 +1,9 @@
 <?php
 namespace Payum\YiiExtension;
 
-use Payum\Request\BinaryMaskStatusRequest;
-use Payum\Request\RedirectUrlInteractiveRequest;
-use Payum\Request\SecuredCaptureRequest;
+use Payum\Core\Request\BinaryMaskStatusRequest;
+use Payum\Core\Request\RedirectUrlInteractiveRequest;
+use Payum\Core\Request\SecuredCaptureRequest;
 
 class PaymentController extends \CController
 {

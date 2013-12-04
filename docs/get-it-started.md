@@ -12,7 +12,7 @@ First add some models:
 
 namespace Application\Model;
 
-use Payum\Model\ArrayObject;
+use Payum\Core\Model\ArrayObject;
 
 class PaymentDetails extends \ArrayObject
 {
@@ -28,7 +28,7 @@ We will use it to secure our payment operations:
 
 namespace Application\Model;
 
-use Payum\Model\Token;
+use Payum\Core\Model\Token;
 
 class PaymentSecurityToken extends Token
 {
@@ -46,10 +46,10 @@ Your configuration may look like this:
 // config/main.php
 
 use Buzz\Client\Curl;
-use Payum\Extension\StorageExtension;
+use Payum\Core\Extension\StorageExtension;
+use Payum\Core\Storage\FilesystemStorage;
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
-use Payum\Storage\FilesystemStorage;
 
 $detailsClass = 'PaymentDetails';
 

@@ -1,17 +1,12 @@
 <?php
 namespace Payum\YiiExtension;
 
-use Payum\Exception\RuntimeException;
-use Payum\Extension\StorageExtension;
-use Payum\PaymentInterface;
-use Payum\Registry\RegistryInterface;
-use Payum\Registry\SimpleRegistry;
-use Payum\Request\BinaryMaskStatusRequest;
-use Payum\Request\RedirectUrlInteractiveRequest;
-use Payum\Request\SecuredCaptureRequest;
-use Payum\Security\HttpRequestVerifierInterface;
-use Payum\Security\PlainHttpRequestVerifier;
-use Payum\Storage\StorageInterface;
+use Payum\Core\PaymentInterface;
+use Payum\Core\Registry\RegistryInterface;
+use Payum\Core\Registry\SimpleRegistry;
+use Payum\Core\Security\HttpRequestVerifierInterface;
+use Payum\Core\Security\PlainHttpRequestVerifier;
+use Payum\Core\Storage\StorageInterface;
 
 class PayumComponent extends \CApplicationComponent
 {
