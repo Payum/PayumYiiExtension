@@ -16,6 +16,7 @@ namespace Payum\YiiExtension\Model;
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Exception\InvalidArgumentException;
 use Payum\Core\Security\Util\Random;
+use Payum\Core\Model\Identificator;
 
 class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
 {
@@ -75,14 +76,17 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
 
     /**
      * {@inheritDoc}
+     * @return Identificator
      */
     public function getDetails()
     {
-        return $this->details;
+        $parts = explode("#", $this->details);
+        return new Identificator($parts[1], $parts[0]);
     }
 
     /**
      * {@inheritDoc}
+     *
      */
     function setDetails($details)
     {
@@ -151,5 +155,14 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
     function setPaymentName($paymentName)
     {
         $this->payment_name = $paymentName;
+    }
+
+    /**
+     * Returns the unique model id
+     * @return array|mixed|null
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

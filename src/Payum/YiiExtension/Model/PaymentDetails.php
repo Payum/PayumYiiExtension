@@ -3,7 +3,7 @@ namespace Payum\YiiExtension\Model;
 
 class PaymentDetails extends \CActiveRecord
 {
-/**
+    /**
      * @var array
      */
     public $array = array();
