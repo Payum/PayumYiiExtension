@@ -2,9 +2,9 @@
 namespace Payum\YiiExtension\Storage;
 
 use InvalidArgumentException;
-use Payum\Exception\LogicException;
-use Payum\Model\Identificator;
-use Payum\Storage\AbstractStorage;
+use Payum\Core\Exception\LogicException;
+use Payum\Core\Model\Identificator;
+use Payum\Core\Storage\AbstractStorage;
 
 class ActiveRecordStorage extends AbstractStorage
 {

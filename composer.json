@@ -37,16 +37,8 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/payum": "dev-master#ba046550eca699b1757e63afa8b32bfd716e18e4",
+        "payum/payum": "0.7.*@dev",
         "yiisoft/yii": "~1"
-    },
-    "suggest": {
-        "payum/paypal-express-checkout-nvp": "If you want to use paypal express checkout nvp gateway",
-        "payum/paypal-pro-checkout-nvp": "If you want to use paypal pro checkout nvp gateway",
-        "payum/authorize-net-aim": "If you want to use authorize.net gateway",
-        "payum/be2bill": "If you want to use be2bill gateway",
-        "payum/payex": "If you want to use payex gateway",
-        "payum/omnipay-bridge": "If you want to use omnipay provided gateways"
     },
     "autoload": {
         "psr-0": { "Payum\\YiiExtension": "" }

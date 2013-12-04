@@ -13,8 +13,8 @@
 
 namespace Payum\YiiExtension\Model;
 
-use Payum\Security\TokenInterface;
-use Payum\Exception\InvalidArgumentException;
+use Payum\Core\Security\TokenInterface;
+use Payum\Core\Exception\InvalidArgumentException;
 
 
 class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
@@ -28,7 +28,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      *
      * @param string $scenario
      * @param $tableName
-     * @throws \Payum\Exception\InvalidArgumentException
+     * @throws \Payum\Core\Exception\InvalidArgumentException
      */
     public function __construct($scenario = 'insert', $tableName = '')
     {
@@ -60,7 +60,7 @@ class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
      * @param string $tableName table corresponding to the model
      * @param string $className active record class name.
      * @return Payment the static model class
-     * @throws \Payum\Exception\InvalidArgumentException
+     * @throws \Payum\Core\Exception\InvalidArgumentException
      */
     public static function model($tableName, $className=__CLASS__)
     {
