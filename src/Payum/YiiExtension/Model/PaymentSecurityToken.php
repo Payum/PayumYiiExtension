@@ -1,162 +1,132 @@
 <?php
 /**
- * This is the model class for table $tableName, which is being used for token storage for Payum payments
- *
- * The following are the available columns in table $tableName:
- * @property string $_hash
- * @property string $_payment_name
- * @property string $_details
- * @property string $_after_url
- * @property string $_target_url
- *
- * Underscores are used because usually these would be private and to prevent
- * the ActiveRecord getters and setters clashing with the required
- * getters and setters from TokenInterface
+ * User: martyn ling <mling@orthomeo.com>
+ * Date: 04/12/13
+ * Time: 18:22
  */
 
 namespace Payum\YiiExtension\Model;
 
-use Payum\Core\Security\TokenInterface;
-use Payum\Core\Exception\InvalidArgumentException;
-use Payum\Core\Security\Util\Random;
-use Payum\Core\Model\Identificator;
+use Payum\Core\Model\Token;
 
-class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
+class PaymentSecurityToken extends Token
 {
-    private static $_tableName;
-
     /**
-     * Constructs a model corresponding to table $tableName
-     * The table must have the columns identified above in the
-     * comments for this class.
-     *
-     * @param string $scenario
-     * @param $tableName
-     * @throws \Payum\Core\Exception\InvalidArgumentException
+     * @var \CActiveRecord
      */
+    protected $activeRecord;
+
     public function __construct($scenario = 'insert', $tableName = '')
     {
-        if ($scenario == 'insert' && $tableName == '') {
-            throw new InvalidArgumentException(
-                'Table name must be supplied when creating a new PaymentSecurityToken'
-            );
-        }
-        if ($tableName !== '') {
-            self::$_tableName = $tableName;
-        }
-        parent::__construct($scenario);
         if ($scenario == 'insert') {
-            $this->_hash = Random::generateToken();
+            $this->activeRecord = new TokenActiveRecord('insert', $tableName);
+            $this->hash = $this->activeRecord->_hash;
         }
     }
 
-    /**
-     * @return string the associated database table name
-     */
-    public function tableName()
+    public function save()
     {
-        return self::$_tableName;
+        $this->activeRecord->save();
     }
 
-    /**
-     * Returns the static model of the specified AR class.
-     * Please note that you should have this exact method in all your CActiveRecord descendants!
-     * @param string $tableName table corresponding to the model
-     * @param string $className active record class name.
-     * @return Payment the static model class
-     * @throws \Payum\Core\Exception\InvalidArgumentException
-     */
-    public static function model($tableName, $className=__CLASS__)
+    public function delete()
     {
-        if ($tableName == '') {
-            throw new InvalidArgumentException(
-                'Table name must be supplied when trying to find a PaymentSecurityToken'
-            );
-        }
-        self::$_tableName = $tableName;
-        return parent::model($className);
+        $this->activeRecord->delete();
+    }
+
+    public static function findModelById($tableName, $id)
+    {
+        $token = new PaymentSecurityToken();
+        $token->activeRecord = TokenActiveRecord::model($tableName)->findByPk($id);
+
+        // Load the values into the token object from the activeRecord
+        $token->hash = $token->activeRecord->_hash;
+        $token->targetUrl = $token->activeRecord->_target_url;
+        $token->afterUrl = $token->activeRecord->_after_url;
+        $token->paymentName = $token->activeRecord->_payment_name;
+        $token->details = $token->activeRecord->getDetailsIdentificator();
+        return $token;
     }
 
     /**
      * {@inheritDoc}
+     *
      * @return Identificator
      */
     public function getDetails()
     {
-        $parts = explode("#", $this->_details);
-        return new Identificator($parts[1], $parts[0]);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     */
-    function setDetails($details)
-    {
-        $this->_details = $details;
+        return $this->details;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getHash()
+    public function setDetails($details)
     {
-        return $this->_hash;
+         $this->activeRecord->_details = $this->details = $details;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setHash($hash)
+    public function getHash()
     {
-        $this->_hash = $hash;
+        return $this->hash;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getTargetUrl()
+    public function setHash($hash)
     {
-        return $this->_target_url;
+        $this->hash = $this->activeRecord->_hash = $hash;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setTargetUrl($targetUrl)
+    public function getTargetUrl()
     {
-        $this->_target_url = $targetUrl;
+        return $this->targetUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getAfterUrl()
+    public function setTargetUrl($targetUrl)
     {
-        return $this->_after_url;
+        $this->targetUrl = $this->activeRecord->_target_url = $targetUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setAfterUrl($afterUrl)
+    public function getAfterUrl()
     {
-        $this->_after_url = $afterUrl;
+        return $this->afterUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getPaymentName()
+    public function setAfterUrl($afterUrl)
     {
-        return $this->_payment_name;
+        $this->afterUrl = $this->activeRecord->_after_url = $afterUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setPaymentName($paymentName)
+    public function getPaymentName()
     {
-        $this->_payment_name = $paymentName;
+        return $this->paymentName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPaymentName($paymentName)
+    {
+        $this->paymentName = $this->activeRecord->_payment_name = $paymentName;
     }
 }

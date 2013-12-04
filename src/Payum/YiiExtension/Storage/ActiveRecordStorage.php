@@ -22,7 +22,7 @@ class ActiveRecordStorage extends AbstractStorage
      */
     public function createModel()
     {
-        return new $this->modelClass('insert', $this->_tableName);
+        return new $this->modelClass($this->_tableName);
     }
 
     /**
@@ -59,7 +59,7 @@ class ActiveRecordStorage extends AbstractStorage
     function findModelById($id)
     {
         $className = $this->modelClass;
-        return $className::model($this->_tableName)->findByPk($id);
+        return $className::findModelById($this->_tableName, $id);
     }
 
     /**
