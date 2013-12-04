@@ -15,7 +15,7 @@ namespace Payum\YiiExtension\Model;
 
 use Payum\Core\Security\TokenInterface;
 use Payum\Core\Exception\InvalidArgumentException;
-
+use Payum\Core\Security\Util\Random;
 
 class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
 {
