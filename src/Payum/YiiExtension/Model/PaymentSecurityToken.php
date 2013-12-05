@@ -14,7 +14,7 @@ class PaymentSecurityToken extends Token
     /**
      * @var \CActiveRecord
      */
-    protected $activeRecord;
+    public $activeRecord;
 
     public function __construct($scenario = 'insert', $tableName = '')
     {
