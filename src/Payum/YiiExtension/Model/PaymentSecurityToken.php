@@ -24,6 +24,11 @@ class PaymentSecurityToken extends Token
         }
     }
 
+    public function primaryKey()
+    {
+        return $this->activeRecord->primaryKey();
+    }
+
     public function save()
     {
         $this->activeRecord->save();
