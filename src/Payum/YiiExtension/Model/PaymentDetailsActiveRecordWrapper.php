@@ -16,19 +16,20 @@ class PaymentDetailsActiveRecordWrapper extends ArrayObject
     public function __construct($scenario = 'insert', $tableName = '')
     {
         if ($scenario == 'insert') {
-            $this->activeRecord = new TokenActiveRecord('insert', $tableName);
+            $this->activeRecord = new PaymentActiveRecord('insert', $tableName);
         }
     }
 
     public function primaryKey()
     {
-        return $this->activeRecord->primaryKey();
+        return $this->activeRecord->tableSchema->primaryKey;
     }
 
     public function save()
     {
         $this->activeRecord->_details = serialize($this->array);
         $this->activeRecord->save();
+        $this[$this->primaryKey()] = $this->activeRecord->{$this->primaryKey()};
     }
 
     public function delete()

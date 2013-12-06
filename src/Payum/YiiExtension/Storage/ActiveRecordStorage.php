@@ -3,6 +3,7 @@ namespace Payum\YiiExtension\Storage;
 
 use InvalidArgumentException;
 use Payum\Core\Exception\LogicException;
+use Payum\Core\Model\ArrayObject;
 use Payum\Core\Model\Identificator;
 use Payum\Core\Storage\AbstractStorage;
 
@@ -50,7 +51,11 @@ class ActiveRecordStorage extends AbstractStorage
             throw new LogicException('Composite primary keys are not supported by this storage.');
         }
 
-        return new Identificator($model->{$model->primaryKey()}, $this->modelClass);
+        if ($model instanceof ArrayObject) {
+            return new Identificator($model[$model->primaryKey()], $this->modelClass);
+        } else {
+            return new Identificator($model->{$model->primaryKey()}, $this->modelClass);
+        }
     }
 
     /**
