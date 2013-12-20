@@ -10,11 +10,7 @@ First add some models:
 <?php
 //app/models/PaymentDetails.php
 
-namespace Application\Model;
-
-use Payum\Core\Model\ArrayObject;
-
-class PaymentDetails extends \ArrayObject
+class PaymentDetails  extends \Payum\Core\Model\ArrayObject
 {
 }
 ```
@@ -26,16 +22,12 @@ We will use it to secure our payment operations:
 <?php
 //app/models/PaymentSecurityToken.php
 
-namespace Application\Model;
-
-use Payum\Core\Model\Token;
-
-class PaymentSecurityToken extends Token
+class PaymentSecurityToken  extends \Payum\Core\Model\Token
 {
 }
 ```
 
-_**Note**: We provide Doctrine ORM\MognoODM mapping for these parent models too.
+_**Note**: We provide Doctrine ORM\MognoODM mapping for the ArrayObject models too.
 
 In the _app/config/main.php_ you have to configure payum extensions.
 In general you define model storages and payments.
@@ -50,8 +42,6 @@ use Payum\Core\Extension\StorageExtension;
 use Payum\Core\Storage\FilesystemStorage;
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
-
-$detailsClass = 'PaymentDetails';
 
 return array(
     'controllerMap'=>array(
@@ -73,7 +63,7 @@ return array(
             ),
             'storages' => array(
                 'paypal' => array(
-                    $detailsClass => new FilesystemStorage(__DIR__.'/../data', $detailsClass),
+                    'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails'),
                 )
             )
         ),
@@ -81,7 +71,7 @@ return array(
 );
 ```
 
-_**Note**: We use paypal as an example. You may configure any other payment you want._
+_**Note**: We use paypal as an example. You may configure any other payment you may want._
  
 ## Usage
 
@@ -101,13 +91,12 @@ class PaypalController extends CController
     public function actionPrepare()
     {
         $paymentName = 'paypal';
-        $detailsClass = 'PaymentDetails';
 
         $payum = $this->getPayum();
 
         $tokenStorage = $payum->getTokenStorage();
         $storage = $payum->getRegistry()->getStorageForClass(
-            $detailsClass,
+            'PaymentDetails',
             $paymentName
         );
 
@@ -145,7 +134,7 @@ class PaypalController extends CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $payment->execute($status = new \Payum\Request\BinaryMaskStatusRequest($token));
+        $payment->execute($status = new \Payum\Core\Request\BinaryMaskStatusRequest($token));
 
         $content = '';
         if ($status->isSuccess()) {
