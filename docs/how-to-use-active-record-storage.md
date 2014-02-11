@@ -1,4 +1,4 @@
-# Get it started
+# How to use active record storage
 
 ## Configuration
 
