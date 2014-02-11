@@ -1,151 +1,137 @@
 <?php
+/**
+ * User: martyn ling <mling@orthomeo.com>
+ * Date: 04/12/13
+ * Time: 18:22
+ */
+
 namespace Payum\YiiExtension\Model;
 
-use Payum\Security\TokenInterface;
+use Payum\Core\Model\Token;
 
-class PaymentSecurityToken extends \CActiveRecord implements TokenInterface
+class PaymentSecurityToken extends Token
 {
     /**
+     * @var \CActiveRecord
+     */
+    public $activeRecord;
+
+    public function __construct($scenario = 'insert', $tableName = '')
+    {
+        if ($scenario == 'insert') {
+            $this->activeRecord = new TokenActiveRecord('insert', $tableName);
+            $this->hash = $this->activeRecord->_hash;
+        }
+    }
+
+    public function primaryKey()
+    {
+        return $this->activeRecord->primaryKey();
+    }
+
+    public function save()
+    {
+        $this->activeRecord->save();
+    }
+
+    public function delete()
+    {
+        $this->activeRecord->delete();
+    }
+
+    public static function findModelById($tableName, $id)
+    {
+        $token = new PaymentSecurityToken('update');
+        $token->activeRecord = TokenActiveRecord::model($tableName)->findByPk($id);
+
+        // Load the values into the token object from the activeRecord
+        $token->hash = $token->activeRecord->_hash;
+        $token->targetUrl = $token->activeRecord->_target_url;
+        $token->afterUrl = $token->activeRecord->_after_url;
+        $token->paymentName = $token->activeRecord->_payment_name;
+        $token->details = $token->activeRecord->getDetailsIdentificator();
+        return $token;
+    }
+
+    /**
      * {@inheritDoc}
+     *
+     * @return Identificator
      */
     public function getDetails()
     {
-        // TODO: Implement getDetails() method.
+        return $this->details;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setDetails($details)
+    public function setDetails($details)
     {
-        // TODO: Implement setDetails() method.
+         $this->activeRecord->_details = $this->details = $details;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getHash()
+    public function getHash()
     {
-        // TODO: Implement getHash() method.
+        return $this->hash;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setHash($hash)
+    public function setHash($hash)
     {
-        // TODO: Implement setHash() method.
+        $this->hash = $this->activeRecord->_hash = $hash;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getTargetUrl()
+    public function getTargetUrl()
     {
-        // TODO: Implement getTargetUrl() method.
+        return $this->targetUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setTargetUrl($targetUrl)
+    public function setTargetUrl($targetUrl)
     {
-        // TODO: Implement setTargetUrl() method.
+        $this->targetUrl = $this->activeRecord->_target_url = $targetUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getAfterUrl()
+    public function getAfterUrl()
     {
-        // TODO: Implement getAfterUrl() method.
+        return $this->afterUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setAfterUrl($afterUrl)
+    public function setAfterUrl($afterUrl)
     {
-        // TODO: Implement setAfterUrl() method.
+        $this->afterUrl = $this->activeRecord->_after_url = $afterUrl;
     }
 
     /**
      * {@inheritDoc}
      */
-    function getPaymentName()
+    public function getPaymentName()
     {
-        // TODO: Implement getPaymentName() method.
+        return $this->paymentName;
     }
 
     /**
      * {@inheritDoc}
      */
-    function setPaymentName($paymentName)
+    public function setPaymentName($paymentName)
     {
-        // TODO: Implement setPaymentName() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getHash()
-    {
-        // TODO: Implement getHash() method.
-    }
-
-    /**
-     * @param string $hash
-     */
-    function setHash($hash)
-    {
-        // TODO: Implement setHash() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getTargetUrl()
-    {
-        // TODO: Implement getTargetUrl() method.
-    }
-
-    /**
-     * @param string $targetUrl
-     */
-    function setTargetUrl($targetUrl)
-    {
-        // TODO: Implement setTargetUrl() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getAfterUrl()
-    {
-        // TODO: Implement getAfterUrl() method.
-    }
-
-    /**
-     * @param string $afterUrl
-     */
-    function setAfterUrl($afterUrl)
-    {
-        // TODO: Implement setAfterUrl() method.
-    }
-
-    /**
-     * @return string
-     */
-    function getPaymentName()
-    {
-        // TODO: Implement getPaymentName() method.
-    }
-
-    /**
-     * @param string $paymentName
-     */
-    function setPaymentName($paymentName)
-    {
-        // TODO: Implement setPaymentName() method.
+        $this->paymentName = $this->activeRecord->_payment_name = $paymentName;
     }
 }

@@ -2,18 +2,36 @@
 namespace Payum\YiiExtension\Storage;
 
 use InvalidArgumentException;
-use Payum\Exception\LogicException;
-use Payum\Model\Identificator;
-use Payum\Storage\AbstractStorage;
+use Payum\Core\Exception\LogicException;
+use Payum\Core\Model\ArrayObject;
+use Payum\Core\Model\Identificator;
+use Payum\Core\Storage\AbstractStorage;
 
 class ActiveRecordStorage extends AbstractStorage
 {
+    protected $_tableName;
+
+    public function __construct($tableName, $modelClass)
+    {
+        parent::__construct($modelClass);
+
+        $this->_tableName = $tableName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createModel()
+    {
+        return new $this->modelClass('insert', $this->_tableName);
+    }
+
     /**
      * {@inheritDoc}
      */
     protected function doUpdateModel($model)
     {
-        $model::save();
+        $model->save();
     }
 
     /**
@@ -29,11 +47,15 @@ class ActiveRecordStorage extends AbstractStorage
      */
     protected function doGetIdentificator($model)
     {
-        if (is_array($model->primaryKey()) {
-            throw new LogicException('Composite primary keys is not supported by this storage.');
+        if (is_array($model->primaryKey())) {
+            throw new LogicException('Composite primary keys are not supported by this storage.');
         }
 
-        return new Identificator($model->{$model->primaryKey()}, $this->modelClass);
+        if ($model instanceof ArrayObject) {
+            return new Identificator($model[$model->primaryKey()], $this->modelClass);
+        } else {
+            return new Identificator($model->{$model->primaryKey()}, $this->modelClass);
+        }
     }
 
     /**
@@ -41,7 +63,8 @@ class ActiveRecordStorage extends AbstractStorage
      */
     function findModelById($id)
     {
-        return $this->modelClass::model()->findByPk($id);
+        $className = $this->modelClass;
+        return $className::findModelById($this->_tableName, $id);
     }
 
     /**
@@ -51,8 +74,11 @@ class ActiveRecordStorage extends AbstractStorage
     {
         parent::assertModelSupported($model);
 
-        if (false == $model instanceof \CActiveRecord) {
-            throw new InvalidArgumentException('Invalid model given. Should be sub class of CActiveRecord class.');
+        if (!property_exists(get_class($model), 'activeRecord')
+            || false == $model->activeRecord instanceof \CActiveRecord) {
+            throw new InvalidArgumentException(
+                'Model required to have activeRecord property, which should be sub class of CActiveRecord class.'
+            );
         }
     }
 }
