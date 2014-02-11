@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `TOKEN_TABLE_NAME` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ```
 
-The payment details table cane be created as follows:
+The payment details table can be created as follows:
 ```
 --
 -- Table structure for table `PAYMENT_DETAILS_TABLE_NAME`
