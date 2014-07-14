@@ -13,10 +13,6 @@ class PaymentController extends \CController
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
         $payment->execute($status = new BinaryMaskStatusRequest($token));
-        if (false == $status->isNew()) {
-            header('HTTP/1.1 400 Bad Request', true, 400);
-            exit;
-        }
 
         if ($interactiveRequest = $payment->execute(new SecuredCaptureRequest($token), true)) {
             if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
