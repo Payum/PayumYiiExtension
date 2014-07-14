@@ -2,7 +2,7 @@
 namespace Payum\YiiExtension;
 
 use Payum\Core\Request\BinaryMaskStatusRequest;
-use Payum\Core\Request\RedirectUrlInteractiveRequest;
+use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
 
 class PaymentController extends \CController
