@@ -37,8 +37,7 @@ class PayumComponent extends \CApplicationComponent
 
     public function init()
     {
-        $this->registry = new SimpleRegistry($this->payments, $this->storages, null, null);
-        $this->registry->registerStorageExtensions();
+        $this->registry = new SimpleRegistry($this->payments, $this->storages, null);
 
         $this->httpRequestVerifier = new PlainHttpRequestVerifier($this->tokenStorage);
     }
