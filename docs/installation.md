@@ -1,7 +1,8 @@
 # Installation
 
 The preferred way to install the extension is using [composer](http://getcomposer.org/).
-Add next lines to your _composer.json_ file:
+Create a folder named `PayumYiiExtension` in the extensions directory of your Yii project
+and then create a _composer.json_ file with the following content:
 
 ```json
 {
@@ -20,38 +21,23 @@ php composer.phar update payum/payum-yii-extension payum/paypal-express-checkout
 
 Now you have all required code downloaded.
 Next step would be to configure composer autoloader.
-You have to register it inside _www/index.php_ and _app/yiic.php_ to make both cli and web working.
+You have to register it inside _config/main.php_ or _config/console.php_ for the web and cli 
+versions, respectively.
 
 ```php
 <?php
-//app/yiic.php
 
 //put it at the beginning of the file
-require_once(dirname(__FILE__).'/../vendor/autoload.php');
+Yii::setPathOfAlias('Payum', dirname(__FILE__).'/../extensions/PayumYiiExtension/vendor');
+Yii::setPathOfAlias('Payum.YiiExtension', Yii::getPathOfAlias('Payum').'/payum/payum-yii-extension/src/Payum/YiiExtension');
+Yii::import('Payum.autoload', true);
+
+use Buzz\Client\Curl;
+use Payum\Core\Storage\FilesystemStorage;
+use Payum\Paypal\ExpressCheckout\Nvp\Api;
+use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
 
 // ...
-```
-
-```php
-<?php
-//www/index.php
-
-//put it at the beginning of the file
-require_once(dirname(__FILE__).'/../vendor/autoload.php');
-
-// ...
-```
-
-Yii use aliasing system so we have to register alias for payum extension namespace:
-
-```php
-<?php
-//app/config/main.php
-
-Yii::setPathOfAlias(
-    'Payum.YiiExtension',
-    dirname(__FILE__).'/../../vendor/payum/payum-yii-extension/src/Payum/YiiExtension'
-);
 ```
 
 Now you are ready to [get it started](get-it-started.md).
