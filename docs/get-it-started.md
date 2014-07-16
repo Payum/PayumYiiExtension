@@ -29,19 +29,12 @@ class PaymentSecurityToken  extends \Payum\Core\Model\Token
 
 _**Note**: We provide Doctrine ORM\MognoODM mapping for the ArrayObject models too.
 
-In the _app/config/main.php_ you have to configure payum extensions.
+In the _config/main.php_ or _config/console.php_ (web or cli app) you have to configure payum extensions.
 In general you define model storages and payments.
 Your configuration may look like this:
 
 ```php
 <?php
-// config/main.php
-
-use Buzz\Client\Curl;
-use Payum\Core\Extension\StorageExtension;
-use Payum\Core\Storage\FilesystemStorage;
-use Payum\Paypal\ExpressCheckout\Nvp\Api;
-use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
 
 return array(
     'controllerMap'=>array(
