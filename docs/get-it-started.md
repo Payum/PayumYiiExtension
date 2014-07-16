@@ -45,7 +45,7 @@ return array(
     'components' => array(
         'payum' => array(
             'class' => '\Payum\YiiExtension\PayumComponent',
-            'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken'),
+            'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken', 'hash'),
             'payments' => array(
                 'paypal' => PaymentFactory::create(new Api(new Curl(), array(
                     'username' => 'REPLACE WITH YOURS',
@@ -55,9 +55,7 @@ return array(
                 )))
             ),
             'storages' => array(
-                'paypal' => array(
-                    'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails'),
-                )
+                'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails'),
             )
         ),
     ),
