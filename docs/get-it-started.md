@@ -88,7 +88,7 @@ class PaypalController extends CController
         $payum = $this->getPayum();
 
         $tokenStorage = $payum->getTokenStorage();
-        $storage = $payum->getRegistry()->getStorageForClass(
+        $storage = $payum->getRegistry()->getStorage(
             'PaymentDetails',
             $paymentName
         );
