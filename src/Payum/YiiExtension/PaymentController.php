@@ -12,7 +12,6 @@ class PaymentController extends \CController
     {
         parent::init();
 
-        \Yii::app()->attachEventHandler('onException', array($this, 'handleError'));
         \Yii::app()->attachEventHandler('onException', array($this, 'handleException'));
     }
 
@@ -30,11 +29,6 @@ class PaymentController extends \CController
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
         $this->redirect($token->getAfterUrl());
-    }
-
-    public function handleError(\CExceptionEvent $event)
-    {
-
     }
 
     public function handleException(\CExceptionEvent $event)
