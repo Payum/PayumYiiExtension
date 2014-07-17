@@ -5,6 +5,7 @@ use Payum\Core\Request\BinaryMaskStatusRequest;
 use Payum\Core\Request\InteractiveRequestInterface;
 use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
+use Payum\Core\Exception\LogicException;
 
 class PaymentController extends \CController
 {
@@ -44,6 +45,14 @@ class PaymentController extends \CController
             $event->handled = true;
             return;
         }
+
+        $ro = new \ReflectionObject($interactiveRequest);
+
+        $event->exception = new LogicException(
+            sprintf('Cannot convert interactive request %s to Yii response.', $ro->getShortName()),
+            null,
+            $interactiveRequest
+        );
     }
 
     /**
