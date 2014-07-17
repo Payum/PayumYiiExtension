@@ -1,7 +1,6 @@
 <?php
 namespace Payum\YiiExtension;
 
-use YiiBase;
 use Payum\Core\Request\BinaryMaskStatusRequest;
 use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
@@ -15,10 +14,6 @@ class PaymentController extends \CController
 
         $status = new BinaryMaskStatusRequest($token);
         $payment->execute($status);
-
-        if (false == $status->isNew()) {
-            YiiBase::app()->end(400);
-        }
 
         try {
             $capture = new SecuredCaptureRequest($token);
