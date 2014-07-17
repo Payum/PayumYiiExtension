@@ -1,6 +1,7 @@
 <?php
 namespace Payum\YiiExtension;
 
+use YiiBase;
 use Payum\Core\Request\BinaryMaskStatusRequest;
 use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
@@ -12,14 +13,21 @@ class PaymentController extends \CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $payment->execute($status = new BinaryMaskStatusRequest($token));
+        $status = new BinaryMaskStatusRequest($token);
+        $payment->execute($status);
 
-        if ($interactiveRequest = $payment->execute(new SecuredCaptureRequest($token), true)) {
-            if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
-                $this->redirect($interactiveRequest->getUrl(), true);
-            }
+        if (false == $status->isNew()) {
+            YiiBase::app()->end(400);
+        }
 
-            throw new \LogicException('Unsupported interactive request', null, $interactiveRequest);
+        try {
+            $capture = new SecuredCaptureRequest($token);
+            $payment->execute($capture);
+        } catch (RedirectUrlInteractiveRequest $interactiveRequest) {
+            $this->redirect($interactiveRequest->getUrl(), true);
+            return;
+        } catch (\Exception $ex) {
+            throw new \Exception('Unsupported request', null, $ex);
         }
 
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
