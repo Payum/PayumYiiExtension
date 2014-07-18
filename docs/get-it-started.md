@@ -125,13 +125,10 @@ class PaypalController extends CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $payment->execute($status = new \Payum\Core\Request\BinaryMaskStatusRequest($token));
+        $status = new \Payum\Core\Request\SimpleStatusRequest($token);
+        $payment->execute($status);
 
-        echo Yii::t('app',
-            '0#<h3>Payment status is NOT success.</h3>|'.
-            '1#<h3>Payment status IS success.</h3>',
-            $status->isSuccess()
-        );
+        echo CHtml::tag('h3', array(), 'Payment status is ' . $status->getStatus());
         echo CHtml::tag('pre', array(), CVarDumper::dumpAsString($status->getModel(), 10, true));
         Yii::app()->end();
     }
