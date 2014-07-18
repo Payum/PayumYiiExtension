@@ -1,7 +1,6 @@
 <?php
 namespace Payum\YiiExtension;
 
-use Payum\Core\Request\BinaryMaskStatusRequest;
 use Payum\Core\Request\InteractiveRequestInterface;
 use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
@@ -21,15 +20,16 @@ class PaymentController extends \CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $status = new BinaryMaskStatusRequest($token);
-        $payment->execute($status);
-
-        $capture = new SecuredCaptureRequest($token);
-        $payment->execute($capture);
+        $payment->execute($capture = new SecuredCaptureRequest($token));
 
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
         $this->redirect($token->getAfterUrl());
+    }
+
+    public function actionNotify()
+    {
+        throw new \LogicException('Not Implemented');
     }
 
     public function handleException(\CExceptionEvent $event)
