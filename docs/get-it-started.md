@@ -129,7 +129,7 @@ class PaypalController extends CController
         $payment->execute($status);
 
         echo CHtml::tag('h3', array(), 'Payment status is ' . $status->getStatus());
-        echo CHtml::tag('pre', array(), CVarDumper::dumpAsString($status->getModel(), 10, true));
+        echo CHtml::tag('pre', array(), json_encode(iterator_to_array($status->getModel()), JSON_PRETTY_PRINT));
         Yii::app()->end();
     }
 
