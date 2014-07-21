@@ -97,10 +97,6 @@ class PaypalController extends CController
         
         $captureToken = $payum->getTokenFactory()->createCaptureToken($paymentName, $details, 'paypal/done');
 
-        $details['RETURNURL'] = $captureToken->getTargetUrl();
-        $details['CANCELURL'] = $captureToken->getTargetUrl();
-        $storage->updateModel($details);
-
         $this->redirect($captureToken->getTargetUrl());
     }
 
