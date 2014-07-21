@@ -1,6 +1,8 @@
 <?php
 namespace Payum\YiiExtension;
 
+\Yii::import('Payum\YiiExtension\TokenFactory', true);
+
 use Payum\Core\PaymentInterface;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Registry\SimpleRegistry;
