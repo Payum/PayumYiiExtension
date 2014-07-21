@@ -85,37 +85,21 @@ class PaypalController extends CController
 
         $payum = $this->getPayum();
 
-        $tokenStorage = $payum->getTokenStorage();
         $storage = $payum->getRegistry()->getStorage(
             'PaymentDetails',
             $paymentName
         );
 
-        $paymentDetails = $storage->createModel();
-        $paymentDetails['PAYMENTREQUEST_0_CURRENCYCODE'] = 'USD';
-        $paymentDetails['PAYMENTREQUEST_0_AMT'] = 1.23;
-        $storage->updateModel($paymentDetails);
+        $details = $storage->createModel();
+        $details['PAYMENTREQUEST_0_CURRENCYCODE'] = 'USD';
+        $details['PAYMENTREQUEST_0_AMT'] = 1.23;
+        $storage->updateModel($details);
+        
+        $captureToken = $payum->getTokenFactory()->createCaptureToken($paymentName, $details, 'paypal/done');
 
-        $doneToken = $tokenStorage->createModel();
-        $doneToken->setPaymentName($paymentName);
-        $doneToken->setDetails($storage->getIdentificator($paymentDetails));
-        $doneToken->setTargetUrl(
-            $this->createAbsoluteUrl('paypal/done', array('payum_token' => $doneToken->getHash()))
-        );
-        $tokenStorage->updateModel($doneToken);
-
-        $captureToken = $tokenStorage->createModel();
-        $captureToken->setPaymentName('paypal');
-        $captureToken->setDetails($storage->getIdentificator($paymentDetails));
-        $captureToken->setTargetUrl(
-            $this->createAbsoluteUrl('payment/capture', array('payum_token' => $captureToken->getHash()))
-        );
-        $captureToken->setAfterUrl($doneToken->getTargetUrl());
-        $tokenStorage->updateModel($captureToken);
-
-        $paymentDetails['RETURNURL'] = $captureToken->getTargetUrl();
-        $paymentDetails['CANCELURL'] = $captureToken->getTargetUrl();
-        $storage->updateModel($paymentDetails);
+        $details['RETURNURL'] = $captureToken->getTargetUrl();
+        $details['CANCELURL'] = $captureToken->getTargetUrl();
+        $storage->updateModel($details);
 
         $this->redirect($captureToken->getTargetUrl());
     }
