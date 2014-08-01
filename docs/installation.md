@@ -6,7 +6,7 @@ and then create a _composer.json_ file with the following content:
 
 ```json
 {
-    "required": {
+    "require": {
         "payum/payum-yii-extension": "@stable",
         "payum/paypal-express-checkout-nvp": "@stable"
     }
