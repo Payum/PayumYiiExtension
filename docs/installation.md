@@ -36,11 +36,6 @@ Yii::setPathOfAlias('Payum', dirname(__FILE__).'/../extensions/PayumYiiExtension
 Yii::setPathOfAlias('Payum.YiiExtension', Yii::getPathOfAlias('Payum').'/payum/payum-yii-extension/src/Payum/YiiExtension');
 Yii::import('Payum.autoload', true);
 
-use Buzz\Client\Curl;
-use Payum\Core\Storage\FilesystemStorage;
-use Payum\Paypal\ExpressCheckout\Nvp\Api;
-use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
-
 // ...
 ```
 
