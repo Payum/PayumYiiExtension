@@ -30,7 +30,7 @@ versions, respectively.
 
 ```php
 <?php
-// protected/config/main.php
+// app/config/main.php
 
 Yii::setPathOfAlias('Payum', dirname(__FILE__).'/../extensions/PayumYiiExtension/vendor');
 Yii::setPathOfAlias('Payum.YiiExtension', Yii::getPathOfAlias('Payum').'/payum/payum-yii-extension/src/Payum/YiiExtension');
