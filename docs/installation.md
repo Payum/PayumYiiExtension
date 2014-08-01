@@ -16,7 +16,7 @@ and then create a _composer.json_ file with the following content:
 Then run composer update:
 
 ```bash
-php composer.phar update payum/payum-yii-extension payum/xxx:
+php composer.phar update payum/payum-yii-extension payum/xxx
 ```
 
 _**Note**: Where payum/xxx is a payum package, for example it could be payum/paypal-express-checkout-nvp. Look at [supported payments](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/supported-payments.md) to find out what you can use._
