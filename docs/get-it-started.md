@@ -35,6 +35,12 @@ Your configuration may look like this:
 
 ```php
 <?php
+// protected/config/main.php
+
+use Buzz\Client\Curl;
+use Payum\Core\Storage\FilesystemStorage;
+use Payum\Paypal\ExpressCheckout\Nvp\Api;
+use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
 
 return array(
     'controllerMap'=>array(
