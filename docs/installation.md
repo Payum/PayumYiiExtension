@@ -8,7 +8,7 @@ and then create a _composer.json_ file with the following content:
 {
     "require": {
         "payum/payum-yii-extension": "@stable",
-        "payum/paypal-express-checkout-nvp": "@stable"
+        "payum/xxx": "@stable"
     }
 }
 ```
@@ -16,8 +16,12 @@ and then create a _composer.json_ file with the following content:
 Then run composer update:
 
 ```bash
-php composer.phar update payum/payum-yii-extension payum/paypal-express-checkout-nvp
+php composer.phar update payum/payum-yii-extension payum/xxx:
 ```
+
+_**Note**: Where payum/xxx is a payum package, for example it could be payum/paypal-express-checkout-nvp. Look at [supported payments](https://github.com/Payum/Payum/blob/master/src/Payum/Core/Resources/docs/supported-payments.md) to find out what you can use._
+
+_**Note**: Use payum/payum if you want to install all payments at once._
 
 Now you have all required code downloaded.
 Next step would be to configure composer autoloader.
@@ -26,8 +30,8 @@ versions, respectively.
 
 ```php
 <?php
+// protected/config/main.php
 
-//put it at the beginning of the file
 Yii::setPathOfAlias('Payum', dirname(__FILE__).'/../extensions/PayumYiiExtension/vendor');
 Yii::setPathOfAlias('Payum.YiiExtension', Yii::getPathOfAlias('Payum').'/payum/payum-yii-extension/src/Payum/YiiExtension');
 Yii::import('Payum.autoload', true);
