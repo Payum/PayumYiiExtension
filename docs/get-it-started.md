@@ -12,6 +12,7 @@ First add some models:
 
 class PaymentDetails  extends \Payum\Core\Model\ArrayObject
 {
+    protected $id;
 }
 ```
 
