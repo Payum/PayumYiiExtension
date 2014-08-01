@@ -38,7 +38,6 @@ Your configuration may look like this:
 <?php
 // app/config/main.php
 
-use Buzz\Client\Curl;
 use Payum\Core\Storage\FilesystemStorage;
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
 use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory as PaypalEcPaymentFactory;
@@ -54,7 +53,7 @@ return array(
             'class' => '\Payum\YiiExtension\PayumComponent',
             'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken', 'hash'),
             'payments' => array(
-                'paypal_ec' => PaypalEcPaymentFactory::create(new Api(new Curl(), array(
+                'paypal_ec' => PaypalEcPaymentFactory::create(new Api(array(
                     'username' => 'REPLACE WITH YOURS',
                     'password' => 'REPLACE WITH YOURS',
                     'signature' => 'REPLACE WITH YOURS',

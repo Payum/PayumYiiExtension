@@ -2,8 +2,7 @@
 namespace Payum\YiiExtension;
 
 use Payum\Core\Request\InteractiveRequestInterface;
-use Payum\Core\Request\RedirectUrlInteractiveRequest;
-//use Payum\Core\Request\Http\RedirectUrlInteractiveRequest; // see issue #17
+use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
 use Payum\Core\Request\SecuredCaptureRequest;
 use Payum\Core\Exception\LogicException;
 
@@ -44,6 +43,7 @@ class PaymentController extends \CController
         if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
             $this->redirect($interactiveRequest->getUrl(), true);
             $event->handled = true;
+
             return;
         }
 
