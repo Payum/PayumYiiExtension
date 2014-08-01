@@ -54,7 +54,7 @@ return array(
             'class' => '\Payum\YiiExtension\PayumComponent',
             'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken', 'hash'),
             'payments' => array(
-                'paypal' => PaypalEcPaymentFactory::create(new Api(new Curl(), array(
+                'paypal_ec' => PaypalEcPaymentFactory::create(new Api(new Curl(), array(
                     'username' => 'REPLACE WITH YOURS',
                     'password' => 'REPLACE WITH YOURS',
                     'signature' => 'REPLACE WITH YOURS',
@@ -62,7 +62,7 @@ return array(
                 )))
             ),
             'storages' => array(
-                'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails'),
+                'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails', 'id'),
             )
         ),
     ),
@@ -88,7 +88,7 @@ class PaypalController extends CController
 {
     public function actionPrepare()
     {
-        $paymentName = 'paypal';
+        $paymentName = 'paypal_ec';
 
         $payum = $this->getPayum();
 
