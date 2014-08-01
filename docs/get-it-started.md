@@ -36,12 +36,12 @@ Your configuration may look like this:
 
 ```php
 <?php
-// protected/config/main.php
+// app/config/main.php
 
 use Buzz\Client\Curl;
 use Payum\Core\Storage\FilesystemStorage;
 use Payum\Paypal\ExpressCheckout\Nvp\Api;
-use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory;
+use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory as PaypalEcPaymentFactory;
 
 return array(
     'controllerMap'=>array(
@@ -54,7 +54,7 @@ return array(
             'class' => '\Payum\YiiExtension\PayumComponent',
             'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken', 'hash'),
             'payments' => array(
-                'paypal' => PaymentFactory::create(new Api(new Curl(), array(
+                'paypal' => PaypalEcPaymentFactory::create(new Api(new Curl(), array(
                     'username' => 'REPLACE WITH YOURS',
                     'password' => 'REPLACE WITH YOURS',
                     'signature' => 'REPLACE WITH YOURS',
