@@ -1,10 +1,10 @@
 <?php
 namespace Payum\YiiExtension;
 
-use Payum\Core\Request\InteractiveRequestInterface;
-use Payum\Core\Request\Http\RedirectUrlInteractiveRequest;
-use Payum\Core\Request\SecuredCaptureRequest;
 use Payum\Core\Exception\LogicException;
+use Payum\Core\Reply\HttpRedirect;
+use Payum\Core\Reply\ReplyInterface;
+use Payum\Core\Request\SecuredCapture;
 
 class PaymentController extends \CController
 {
@@ -20,7 +20,7 @@ class PaymentController extends \CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $payment->execute($capture = new SecuredCaptureRequest($token));
+        $payment->execute($capture = new SecuredCapture($token));
 
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
@@ -34,25 +34,25 @@ class PaymentController extends \CController
 
     public function handleException(\CExceptionEvent $event)
     {
-        if (false == $event->exception instanceof InteractiveRequestInterface) {
+        if (false == $event->exception instanceof ReplyInterface) {
             return;
         }
 
-        $interactiveRequest = $event->exception;
+        $reply = $event->exception;
 
-        if ($interactiveRequest instanceof RedirectUrlInteractiveRequest) {
-            $this->redirect($interactiveRequest->getUrl(), true);
+        if ($reply instanceof HttpRedirect) {
+            $this->redirect($reply->getUrl(), true);
             $event->handled = true;
 
             return;
         }
 
-        $ro = new \ReflectionObject($interactiveRequest);
+        $ro = new \ReflectionObject($reply);
 
         $event->exception = new LogicException(
-            sprintf('Cannot convert interactive request %s to Yii response.', $ro->getShortName()),
+            sprintf('Cannot convert reply %s to Yii response.', $ro->getShortName()),
             null,
-            $interactiveRequest
+            $reply
         );
     }
 

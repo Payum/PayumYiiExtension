@@ -111,7 +111,7 @@ class PaypalController extends CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $status = new \Payum\Core\Request\SimpleStatusRequest($token);
+        $status = new \Payum\Core\Request\GetHumanStatus($token);
         $payment->execute($status);
 
         echo CHtml::tag('h3', array(), 'Payment status is ' . $status->getStatus());
