@@ -38,7 +38,7 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/core": "0.11.*@dev"
+        "payum/core": "0.11.*"
     },
     "suggest": {
         "yiisoft/yii": "If you plan to use this extension outside of a Yii project",
