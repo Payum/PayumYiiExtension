@@ -4,7 +4,7 @@ namespace Payum\YiiExtension;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Reply\ReplyInterface;
-use Payum\Core\Request\SecuredCapture;
+use Payum\Core\Request\Capture;
 
 class PaymentController extends \CController
 {
@@ -20,11 +20,16 @@ class PaymentController extends \CController
         $token = $this->getPayum()->getHttpRequestVerifier()->verify($_REQUEST);
         $payment = $this->getPayum()->getRegistry()->getPayment($token->getPaymentName());
 
-        $payment->execute($capture = new SecuredCapture($token));
+        $payment->execute($capture = new Capture($token));
 
         $this->getPayum()->getHttpRequestVerifier()->invalidate($token);
 
         $this->redirect($token->getAfterUrl());
+    }
+
+    public function actionAuthorize()
+    {
+        throw new \LogicException('Not Implemented');
     }
 
     public function actionNotify()
