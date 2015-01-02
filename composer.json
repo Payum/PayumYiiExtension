@@ -38,24 +38,14 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/core": "0.13.*"
-    },
-    "suggest": {
-        "yiisoft/yii": "If you plan to use this extension outside of a Yii project",
-        "payum/paypal-express-checkout-nvp": "If you want to use paypal express checkout nvp gateway",
-        "payum/paypal-pro-checkout-nvp": "If you want to use paypal pro checkout nvp gateway",
-        "payum/authorize-net-aim": "If you want to use authorize.net gateway",
-        "payum/be2bill": "If you want to use be2bill gateway",
-        "payum/payex": "If you want to use payex gateway",
-        "payum/omnipay-bridge": "If you want to use omnipay provided gateways",
-        "payum/stripe": "If you want to use stripe provided gateways"
+        "payum/core": "0.14.*@dev"
     },
     "autoload": {
         "psr-0": { "Payum\\YiiExtension": "" }
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.13-dev"
+            "dev-master": "0.14-dev"
         }
     },
     "config": {
