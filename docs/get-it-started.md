@@ -39,8 +39,8 @@ Your configuration may look like this:
 // app/config/main.php
 
 use Payum\Core\Storage\FilesystemStorage;
-use Payum\Paypal\ExpressCheckout\Nvp\Api;
-use Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory as PaypalEcPaymentFactory;
+
+$paypalExpressCheckoutPaymentFactory = new \Payum\Paypal\ExpressCheckout\Nvp\PaymentFactory();
 
 return array(
     'controllerMap'=>array(
@@ -53,12 +53,14 @@ return array(
             'class' => '\Payum\YiiExtension\PayumComponent',
             'tokenStorage' => new FilesystemStorage(__DIR__.'/../data', 'PaymentSecurityToken', 'hash'),
             'payments' => array(
-                'paypal_ec' => PaypalEcPaymentFactory::create(new Api(array(
-                    'username' => 'REPLACE WITH YOURS',
-                    'password' => 'REPLACE WITH YOURS',
-                    'signature' => 'REPLACE WITH YOURS',
+                // you can add other payments here.
+            
+                'paypal_ec' => $paypalExpressCheckoutPaymentFactory->create(array(
+                    'username' => 'EDIT ME',
+                    'password' => 'EDIT ME',
+                    'signature' => 'EDIT ME',
                     'sandbox' => true
-                )))
+                )),
             ),
             'storages' => array(
                 'PaymentDetails' => new FilesystemStorage(__DIR__.'/../data', 'PaymentDetails', 'id'),
@@ -96,10 +98,10 @@ class PaypalController extends CController
             $paymentName
         );
 
-        $details = $storage->createModel();
+        $details = $storage->create();
         $details['PAYMENTREQUEST_0_CURRENCYCODE'] = 'USD';
         $details['PAYMENTREQUEST_0_AMT'] = 1.23;
-        $storage->updateModel($details);
+        $storage->update($details);
         
         $captureToken = $payum->getTokenFactory()->createCaptureToken($paymentName, $details, 'paypal/done');
 

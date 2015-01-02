@@ -48,7 +48,14 @@ class PayumComponent extends \CApplicationComponent
         $this->registry = new SimpleRegistry($this->payments, $this->storages, null);
 
         $this->httpRequestVerifier = new PlainHttpRequestVerifier($this->tokenStorage);
-        $this->tokenFactory = new TokenFactory($this->tokenStorage, $this->registry, 'payment/capture', 'payment/notify', 'payment/authorize');
+        $this->tokenFactory = new TokenFactory(
+            $this->tokenStorage,
+            $this->registry,
+            'payment/capture',
+            'payment/notify',
+            'payment/authorize',
+            'payment/refund'
+        );
     }
 
     /**
