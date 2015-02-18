@@ -116,7 +116,7 @@ class PaypalController extends CController
         $status = new \Payum\Core\Request\GetHumanStatus($token);
         $payment->execute($status);
 
-        echo CHtml::tag('h3', array(), 'Payment status is ' . $status->getStatus());
+        echo CHtml::tag('h3', array(), 'Payment status is ' . $status->getValue());
         echo CHtml::tag('pre', array(), json_encode(iterator_to_array($status->getModel()), JSON_PRETTY_PRINT));
         Yii::app()->end();
     }
