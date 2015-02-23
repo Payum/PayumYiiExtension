@@ -3,12 +3,13 @@ namespace Payum\YiiExtension;
 
 \Yii::import('Payum\YiiExtension\TokenFactory', true);
 
+use Payum\Core\Bridge\PlainPhp\Security\HttpRequestVerifier;
 use Payum\Core\PaymentInterface;
 use Payum\Core\Registry\RegistryInterface;
 use Payum\Core\Registry\SimpleRegistry;
+use Payum\Core\Security\GenericTokenFactory;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Security\HttpRequestVerifierInterface;
-use Payum\Core\Security\PlainHttpRequestVerifier;
 use Payum\Core\Storage\StorageInterface;
 
 class PayumComponent extends \CApplicationComponent
@@ -45,17 +46,15 @@ class PayumComponent extends \CApplicationComponent
 
     public function init()
     {
-        $this->registry = new SimpleRegistry($this->payments, $this->storages, null);
+        $this->registry = new SimpleRegistry($this->payments, $this->storages, array());
 
-        $this->httpRequestVerifier = new PlainHttpRequestVerifier($this->tokenStorage);
-        $this->tokenFactory = new TokenFactory(
-            $this->tokenStorage,
-            $this->registry,
-            'payment/capture',
-            'payment/notify',
-            'payment/authorize',
-            'payment/refund'
-        );
+        $this->httpRequestVerifier = new HttpRequestVerifier($this->tokenStorage);
+        $this->tokenFactory = new GenericTokenFactory(new TokenFactory($this->tokenStorage, $this->registry), array(
+            'capture' => 'payment/capture',
+            'notify' => 'payment/notify',
+            'authorize' => 'payment/authorize',
+            'refund' => 'payment/refund'
+        ));
     }
 
     /**

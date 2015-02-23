@@ -1,11 +1,10 @@
 <?php
 namespace Payum\YiiExtension;
 
-use Payum\Core\Security\AbstractGenericTokenFactory;
+use Payum\Core\Security\AbstractTokenFactory;
 
-class TokenFactory extends AbstractGenericTokenFactory
+class TokenFactory extends AbstractTokenFactory
 {
-
     /**
      * @param string $path
      * @param array $parameters
