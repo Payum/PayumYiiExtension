@@ -63,6 +63,14 @@ class PaymentController extends \CController
         $this->redirect($token->getAfterUrl());
     }
 
+    public function actionUnsafeNotify()
+    {
+        $gateway = $this->getPayum()->getGateway(Yii::app()->request->getParam('gateway'));
+        $gateway->execute(new Notify(null));
+
+        return new CHttpException(204, '');
+    }
+
     public function handleException(\CExceptionEvent $event)
     {
         if (false == $event->exception instanceof ReplyInterface) {
