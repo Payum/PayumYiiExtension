@@ -21,6 +21,9 @@ use Payum\Core\Security\Util\Random;
  */
 class PaymentToken extends \CActiveRecord implements TokenInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function init()
     {
         $this->hash = Random::generateToken();

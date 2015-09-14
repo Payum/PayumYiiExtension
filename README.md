@@ -13,6 +13,8 @@ Provide nice configuration layer, secured capture controller, storages and lots 
 * [Issue Tracker](https://github.com/Payum/PayumYiiExtension/issues)
 
 ## DB storage
+Use `migrations/add_payum_payment_tables.php` to add tables
+
 ```php
 // app/config/main.php
 use Payum\Core\Storage\FilesystemStorage;
@@ -28,7 +30,7 @@ return array(
     'components' => array(
         'payum' => array(
             'class' => '\Payum\YiiExtension\PayumComponent',
-            'tokenStorage' => new Payum\YiiExtension\Model\CActiveRecordStorage('Payum\YiiExtension\Model\PaymentToken'),'PaymentSecurityToken', 'hash'),
+            'tokenStorage' => new Payum\YiiExtension\Storage\CActiveRecordStorage('Payum\YiiExtension\Model\PaymentToken'),'PaymentSecurityToken', 'hash'),
             'payments' => array(
                 // you can add other payments here.
                 'paypal_ec' => $paypalExpressCheckoutPaymentFactory->create(array(
@@ -39,7 +41,7 @@ return array(
                 )),
             ),
             'storages' => array(
-                'Payum\YiiExtension\Model\PaymentDetails' => new Payum\YiiExtension\Model\CActiveRecordStorage('Payum\YiiExtension\Model\PaymentDetails'),
+                'Payum\YiiExtension\Model\PaymentDetails' => new Payum\YiiExtension\Storage\CActiveRecordStorage('Payum\YiiExtension\Model\PaymentDetails'),
             )
         ),
     ),
