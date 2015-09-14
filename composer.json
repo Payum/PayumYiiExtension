@@ -3,14 +3,14 @@
     "type": "yii-extension",
     "description": "Rich payment solutions for Yii framework. Paypal, payex, authorize.net, be2bill, omnipay, recurring paymens, instant notifications and many more",
     "keywords": [
-        "payment", 
-        "paypal", 
-        "be2bill", 
-        "authorize.net", 
-        "omnipay", 
-        "paypal express checkout", 
-        "paypal pro checkout", 
-        "recurring payment", 
+        "payment",
+        "paypal",
+        "be2bill",
+        "authorize.net",
+        "omnipay",
+        "paypal express checkout",
+        "paypal pro checkout",
+        "recurring payment",
         "payex",
         "offline",
         "instant notification",
@@ -38,14 +38,15 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "payum/core": "0.15.*@dev"
+        "payum/core": "0.14.*"
     },
     "autoload": {
         "psr-0": { "Payum\\YiiExtension": "" }
     },
+    "target-dir": "Payum/YiiExtension",
     "extra": {
         "branch-alias": {
-            "dev-master": "0.15-dev"
+            "dev-master": "0.14-dev"
         }
     },
     "config": {
