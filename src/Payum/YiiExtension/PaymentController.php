@@ -8,6 +8,7 @@ use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Refund;
+use Payum\Core\Reply\HttpPostRedirect;
 
 class PaymentController extends \CController
 {
@@ -77,6 +78,14 @@ class PaymentController extends \CController
             return;
         }
 
+        if ($reply instanceof HttpPostRedirect) {
+            $this->layout = false;
+            $this->renderText($reply->getContent());
+            $event->handled = true;
+
+            return;
+        }
+
         $ro = new \ReflectionObject($reply);
 
         $event->exception = new LogicException(
@@ -93,4 +102,4 @@ class PaymentController extends \CController
     {
         return \Yii::app()->payum;
     }
-} 
+}
