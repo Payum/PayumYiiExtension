@@ -32,6 +32,14 @@ class PaymentToken extends \CActiveRecord implements TokenInterface
     /**
      * {@inheritDoc}
      */
+    public function primaryKey()
+    {
+        return $this->getHash();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getHash()
     {
         return $this->hash;

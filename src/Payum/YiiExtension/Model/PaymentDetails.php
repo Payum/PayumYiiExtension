@@ -33,6 +33,14 @@ class PaymentDetails extends \CActiveRecord implements PaymentInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function primaryKey()
+    {
+        return $this->id;
+    }
+
+    /**
      * Get id.
      *
      * @return int
