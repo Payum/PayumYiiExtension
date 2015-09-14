@@ -34,7 +34,7 @@ class PaymentToken extends \CActiveRecord implements TokenInterface
      */
     public function primaryKey()
     {
-        return $this->getHash();
+        return 'hash';
     }
 
     /**

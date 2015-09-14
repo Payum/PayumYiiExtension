@@ -37,7 +37,7 @@ class PaymentDetails extends \CActiveRecord implements PaymentInterface
      */
     public function primaryKey()
     {
-        return $this->id;
+        return 'id';
     }
 
     /**
