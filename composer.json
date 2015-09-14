@@ -43,7 +43,7 @@
     "autoload": {
         "psr-0": { "Payum\\YiiExtension": "" }
     },
-    "target-dir": "Payum/YiiExtension",
+    "target-dir": "Payum/YiiExtension/src",
     "extra": {
         "branch-alias": {
             "dev-master": "0.14-dev"
