@@ -8,7 +8,7 @@ use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Refund;
-use Payum\Core\Reply\HttpPostRedirect;
+use Payum\Core\Reply\HttpResponse;
 
 class PaymentController extends \CController
 {
@@ -78,8 +78,11 @@ class PaymentController extends \CController
             return;
         }
 
-        if ($reply instanceof HttpPostRedirect) {
+        if ($reply instanceof HttpResponse) {
             $this->layout = false;
+            foreach ($reply->getHeaders() as $header) {
+                header($header);
+            }
             $this->renderText($reply->getContent());
             $event->handled = true;
 
