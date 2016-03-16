@@ -8,6 +8,7 @@ use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Refund;
+use Payum\Core\Reply\HttpResponse;
 
 class PaymentController extends \CController
 {
@@ -62,6 +63,14 @@ class PaymentController extends \CController
         $this->redirect($token->getAfterUrl());
     }
 
+    public function actionUnsafeNotify()
+    {
+        $gateway = $this->getPayum()->getGateway(Yii::app()->request->getParam('gateway'));
+        $gateway->execute(new Notify(null));
+
+        return new CHttpException(204, '');
+    }
+
     public function handleException(\CExceptionEvent $event)
     {
         if (false == $event->exception instanceof ReplyInterface) {
@@ -72,6 +81,17 @@ class PaymentController extends \CController
 
         if ($reply instanceof HttpRedirect) {
             $this->redirect($reply->getUrl(), true);
+            $event->handled = true;
+
+            return;
+        }
+
+        if ($reply instanceof HttpResponse) {
+            $this->layout = false;
+            foreach ($reply->getHeaders() as $header) {
+                header($header);
+            }
+            $this->renderText($reply->getContent());
             $event->handled = true;
 
             return;
@@ -93,4 +113,4 @@ class PaymentController extends \CController
     {
         return \Yii::app()->payum;
     }
-} 
+}
