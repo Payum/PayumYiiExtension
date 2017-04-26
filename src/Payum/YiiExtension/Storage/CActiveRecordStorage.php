@@ -29,7 +29,7 @@ class CActiveRecordStorage extends AbstractStorage
     public function doGetIdentity($model)
     {
         if ($model->getIsNewRecord()) {
-            throw new LogicException('The model must be persisted before usage of this method');
+            throw new \LogicException('The model must be persisted before usage of this method');
         }
 
         return new Identity($model->{$model->primaryKey()}, $model);
