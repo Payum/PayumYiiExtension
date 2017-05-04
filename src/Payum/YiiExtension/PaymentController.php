@@ -65,8 +65,8 @@ class PaymentController extends \CController
 
     public function actionUnsafeNotify()
     {
-        $gateway = $this->getPayum()->getGateway(Yii::app()->request->getParam('gateway'));
-        $gateway->execute(new Notify(null));
+        $payment = $this->getPayum()->getRegistry()->getPayment(\Yii::app()->request->getParam('gateway'));
+        $payment->execute(new Notify(null));
 
         return new CHttpException(204, '');
     }
